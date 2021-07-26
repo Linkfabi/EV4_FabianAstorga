@@ -1,0 +1,256 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="EstacionesBDModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ESTACION">
+          <Key>
+            <PropertyRef Name="Codigo" />
+          </Key>
+          <Property Name="Codigo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Fecha" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="Direccion" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="Region" Type="varchar" MaxLength="4" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PUNTO">
+          <Key>
+            <PropertyRef Name="NumeroPuntoDeCarga" />
+          </Key>
+          <Property Name="NumeroPuntoDeCarga" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Tipo" Type="varchar" MaxLength="4" Nullable="false" />
+          <Property Name="Direccion" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="Region" Type="varchar" MaxLength="4" Nullable="false" />
+        </EntityType>
+        <EntityType Name="REGION">
+          <Key>
+            <PropertyRef Name="IdRegion" />
+          </Key>
+          <Property Name="IdRegion" Type="varchar" MaxLength="4" Nullable="false" />
+          <Property Name="NombreRegion" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TIPOESTACION">
+          <Key>
+            <PropertyRef Name="IdTipo" />
+          </Key>
+          <Property Name="IdTipo" Type="varchar" MaxLength="4" Nullable="false" />
+          <Property Name="Tipo" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="fk_estacion_IdRegion">
+          <End Role="REGION" Type="Self.REGION" Multiplicity="1" />
+          <End Role="ESTACION" Type="Self.ESTACION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="REGION">
+              <PropertyRef Name="IdRegion" />
+            </Principal>
+            <Dependent Role="ESTACION">
+              <PropertyRef Name="Region" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_puntoDeCarga_IdRegion">
+          <End Role="REGION" Type="Self.REGION" Multiplicity="1" />
+          <End Role="PUNTO" Type="Self.PUNTO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="REGION">
+              <PropertyRef Name="IdRegion" />
+            </Principal>
+            <Dependent Role="PUNTO">
+              <PropertyRef Name="Region" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_puntoDeCarga_IdTipoEstacion">
+          <End Role="TIPOESTACION" Type="Self.TIPOESTACION" Multiplicity="1" />
+          <End Role="PUNTO" Type="Self.PUNTO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TIPOESTACION">
+              <PropertyRef Name="IdTipo" />
+            </Principal>
+            <Dependent Role="PUNTO">
+              <PropertyRef Name="Tipo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="EstacionesBDModelStoreContainer">
+          <EntitySet Name="ESTACION" EntityType="Self.ESTACION" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PUNTO" EntityType="Self.PUNTO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="REGION" EntityType="Self.REGION" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TIPOESTACION" EntityType="Self.TIPOESTACION" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="fk_estacion_IdRegion" Association="Self.fk_estacion_IdRegion">
+            <End Role="REGION" EntitySet="REGION" />
+            <End Role="ESTACION" EntitySet="ESTACION" />
+          </AssociationSet>
+          <AssociationSet Name="fk_puntoDeCarga_IdRegion" Association="Self.fk_puntoDeCarga_IdRegion">
+            <End Role="REGION" EntitySet="REGION" />
+            <End Role="PUNTO" EntitySet="PUNTO" />
+          </AssociationSet>
+          <AssociationSet Name="fk_puntoDeCarga_IdTipoEstacion" Association="Self.fk_puntoDeCarga_IdTipoEstacion">
+            <End Role="TIPOESTACION" EntitySet="TIPOESTACION" />
+            <End Role="PUNTO" EntitySet="PUNTO" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="EstacionesBDModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="ESTACION">
+          <Key>
+            <PropertyRef Name="Codigo" />
+          </Key>
+          <Property Name="Codigo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Fecha" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Direccion" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Region" Type="String" MaxLength="4" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="REGION1" Relationship="Self.fk_estacion_IdRegion" FromRole="ESTACION" ToRole="REGION" />
+        </EntityType>
+        <EntityType Name="PUNTO">
+          <Key>
+            <PropertyRef Name="NumeroPuntoDeCarga" />
+          </Key>
+          <Property Name="NumeroPuntoDeCarga" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Tipo" Type="String" MaxLength="4" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Direccion" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Region" Type="String" MaxLength="4" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="REGION1" Relationship="Self.fk_puntoDeCarga_IdRegion" FromRole="PUNTO" ToRole="REGION" />
+          <NavigationProperty Name="TIPOESTACION" Relationship="Self.fk_puntoDeCarga_IdTipoEstacion" FromRole="PUNTO" ToRole="TIPOESTACION" />
+        </EntityType>
+        <EntityType Name="REGION">
+          <Key>
+            <PropertyRef Name="IdRegion" />
+          </Key>
+          <Property Name="IdRegion" Type="String" MaxLength="4" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="NombreRegion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="ESTACION" Relationship="Self.fk_estacion_IdRegion" FromRole="REGION" ToRole="ESTACION" />
+          <NavigationProperty Name="PUNTO" Relationship="Self.fk_puntoDeCarga_IdRegion" FromRole="REGION" ToRole="PUNTO" />
+        </EntityType>
+        <EntityType Name="TIPOESTACION">
+          <Key>
+            <PropertyRef Name="IdTipo" />
+          </Key>
+          <Property Name="IdTipo" Type="String" MaxLength="4" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Tipo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="PUNTO" Relationship="Self.fk_puntoDeCarga_IdTipoEstacion" FromRole="TIPOESTACION" ToRole="PUNTO" />
+        </EntityType>
+        <Association Name="fk_estacion_IdRegion">
+          <End Role="REGION" Type="Self.REGION" Multiplicity="1" />
+          <End Role="ESTACION" Type="Self.ESTACION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="REGION">
+              <PropertyRef Name="IdRegion" />
+            </Principal>
+            <Dependent Role="ESTACION">
+              <PropertyRef Name="Region" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_puntoDeCarga_IdRegion">
+          <End Role="REGION" Type="Self.REGION" Multiplicity="1" />
+          <End Role="PUNTO" Type="Self.PUNTO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="REGION">
+              <PropertyRef Name="IdRegion" />
+            </Principal>
+            <Dependent Role="PUNTO">
+              <PropertyRef Name="Region" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_puntoDeCarga_IdTipoEstacion">
+          <End Role="TIPOESTACION" Type="Self.TIPOESTACION" Multiplicity="1" />
+          <End Role="PUNTO" Type="Self.PUNTO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TIPOESTACION">
+              <PropertyRef Name="IdTipo" />
+            </Principal>
+            <Dependent Role="PUNTO">
+              <PropertyRef Name="Tipo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="EstacionesBDEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ESTACION" EntityType="Self.ESTACION" />
+          <EntitySet Name="PUNTO" EntityType="Self.PUNTO" />
+          <EntitySet Name="REGION" EntityType="Self.REGION" />
+          <EntitySet Name="TIPOESTACION" EntityType="Self.TIPOESTACION" />
+          <AssociationSet Name="fk_estacion_IdRegion" Association="Self.fk_estacion_IdRegion">
+            <End Role="REGION" EntitySet="REGION" />
+            <End Role="ESTACION" EntitySet="ESTACION" />
+          </AssociationSet>
+          <AssociationSet Name="fk_puntoDeCarga_IdRegion" Association="Self.fk_puntoDeCarga_IdRegion">
+            <End Role="REGION" EntitySet="REGION" />
+            <End Role="PUNTO" EntitySet="PUNTO" />
+          </AssociationSet>
+          <AssociationSet Name="fk_puntoDeCarga_IdTipoEstacion" Association="Self.fk_puntoDeCarga_IdTipoEstacion">
+            <End Role="TIPOESTACION" EntitySet="TIPOESTACION" />
+            <End Role="PUNTO" EntitySet="PUNTO" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="EstacionesBDModelStoreContainer" CdmEntityContainer="EstacionesBDEntities">
+          <EntitySetMapping Name="ESTACION">
+            <EntityTypeMapping TypeName="EstacionesBDModel.ESTACION">
+              <MappingFragment StoreEntitySet="ESTACION">
+                <ScalarProperty Name="Codigo" ColumnName="Codigo" />
+                <ScalarProperty Name="Fecha" ColumnName="Fecha" />
+                <ScalarProperty Name="Direccion" ColumnName="Direccion" />
+                <ScalarProperty Name="Region" ColumnName="Region" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PUNTO">
+            <EntityTypeMapping TypeName="EstacionesBDModel.PUNTO">
+              <MappingFragment StoreEntitySet="PUNTO">
+                <ScalarProperty Name="NumeroPuntoDeCarga" ColumnName="NumeroPuntoDeCarga" />
+                <ScalarProperty Name="Tipo" ColumnName="Tipo" />
+                <ScalarProperty Name="Direccion" ColumnName="Direccion" />
+                <ScalarProperty Name="Region" ColumnName="Region" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="REGION">
+            <EntityTypeMapping TypeName="EstacionesBDModel.REGION">
+              <MappingFragment StoreEntitySet="REGION">
+                <ScalarProperty Name="IdRegion" ColumnName="IdRegion" />
+                <ScalarProperty Name="NombreRegion" ColumnName="NombreRegion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TIPOESTACION">
+            <EntityTypeMapping TypeName="EstacionesBDModel.TIPOESTACION">
+              <MappingFragment StoreEntitySet="TIPOESTACION">
+                <ScalarProperty Name="IdTipo" ColumnName="IdTipo" />
+                <ScalarProperty Name="Tipo" ColumnName="Tipo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
